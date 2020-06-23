@@ -9,6 +9,7 @@ import ShoppingBasketSharp from '@material-ui/icons/ShoppingBasketSharp';
 import { makeStyles, useTheme } from '@material-ui/core/';
 
 import DesktopSection from './DesktopSection';
+import MobileSection from './MobileSection';
 import AccountMenu from './AccountMenu';
 import InfoMenu from './InfoMenu';
 import Search from './Search';
@@ -45,13 +46,15 @@ const NavBar = (props) => {
   const classes = useStyles();
   const [accountMenuAnchor, setAccountMenuAnchor] = useState(null);
   const [infoMenuAnchor, setInfoMenuAnchor] = useState(null);
+  const [mobileMenuAnchor, setMobileMenuAnchor] = useState(null);
   const theme = useTheme();
 
   const infoMenuOpen = Boolean(infoMenuAnchor);
   const accountMenuOpen = Boolean(accountMenuAnchor);
+  const mobileMenuOpen = Boolean(mobileMenuAnchor);
 
   const accountMenuId = 'account-menu';
-
+  const mobileMenuId = 'mobile-menu';
   const infoMenuId = 'info-menu';
 
   const themeSwitcher =
@@ -85,6 +88,14 @@ const NavBar = (props) => {
     setAccountMenuAnchor(null);
   };
 
+  const openMobileMenu = ({ currentTarget }) => {
+    setMobileMenuAnchor(currentTarget);
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuAnchor(null);
+  };
+
   return (
     <div className={classes.grow}>
       <AppBar className={classes.appBar}>
@@ -112,6 +123,12 @@ const NavBar = (props) => {
             openInfoMenu={openInfoMenu}
             themeSwitcher={themeSwitcher}
             toggleTheme={toggleTheme}
+          />
+
+          <MobileSection
+            mobileMenuOpen={mobileMenuOpen}
+            mobileMenuId={mobileMenuId}
+            openMobileMenu={openMobileMenu}
           />
         </Toolbar>
       </AppBar>
