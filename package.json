@@ -1,0 +1,49 @@
+{
+  "name": "hair-store",
+  "version": "0.1.0",
+  "author": "devskope",
+  "description": "View and purchase hair and hair products; Next.js apollo graphql",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "export": "next export",
+    "build": "next build",
+    "start": "next start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devskope/hair-store.git"
+  },
+  "bugs": {
+    "url": "https://github.com/devskope/hair-store/issues"
+  },
+  "homepage": "https://github.com/devskope/hair-store#readme",
+  "keywords": [
+    "hair",
+    "ecommerce",
+    "store",
+    "shopping",
+    "next.js",
+    "graphql"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@apollo/react-hooks": "3.1.5",
+    "@devskope/use-mui-theme": "2.0.0",
+    "@material-ui/core": "4.10.2",
+    "@material-ui/icons": "4.9.1",
+    "@material-ui/lab": "4.0.0-alpha.56",
+    "apollo-boost": "0.4.9",
+    "graphql": "15.1.0",
+    "material-ui-image": "3.2.3",
+    "next": "9.4.4",
+    "next-with-apollo": "5.0.1",
+    "nprogress": "0.2.0",
+    "prop-types": "15.7.2",
+    "react": "16.13.1",
+    "react-content-loader": "5.1.0",
+    "react-dom": "16.13.1",
+    "react-markdown": "4.3.1",
+    "react-multi-carousel": "2.5.5"
+  }
+}
