@@ -13,6 +13,7 @@ import MobileSection from './MobileSection';
 import AccountMenu from './AccountMenu';
 import InfoMenu from './InfoMenu';
 import Search from './Search';
+import NavDrawer from './NavDrawer';
 import Link from '../Link';
 import themes from '../../../lib/themes';
 import { useState } from 'react';
@@ -145,6 +146,14 @@ const NavBar = (props) => {
         closeInfoMenu={closeInfoMenu}
         infoMenuAnchor={infoMenuAnchor}
         infoMenuOpen={infoMenuOpen}
+      />
+
+      <NavDrawer
+        id={mobileMenuId}
+        isLightTheme={theme.palette.type === 'light'}
+        toggleTheme={toggleTheme}
+        open={mobileMenuOpen}
+        onClose={closeMobileMenu}
       />
     </div>
   );
