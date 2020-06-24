@@ -1,5 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 
+import AllProducts from '../components/landing/AllProducts';
 import Banner from '../components/landing/Banner';
 
 const useStyles = makeStyles((theme) => ({
@@ -18,6 +19,7 @@ const Landing = () => {
   return (
     <main className={classes.main}>
       <Banner id='banner' loading={true} />
+      <AllProducts id='all-products' />
     </main>
   );
 };
