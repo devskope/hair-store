@@ -1,0 +1,179 @@
+import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import AddIcon from '@material-ui/icons/Add';
+import { makeStyles } from '@material-ui/core';
+import { useState } from 'react';
+
+import Link from '../common/Link';
+import { VisibilityToggler } from '../common/Elements';
+import { validateAuthForm } from '../../lib/utils/validators';
+
+export const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: '3rem 1rem',
+  },
+  form: {
+    flexBasis: '85%',
+    minWidth: '300px',
+    maxWidth: '500px',
+    height: 'max-content',
+    padding: '1.5rem',
+    '&:hover': {
+      boxShadow: theme.shadows[2],
+    },
+  },
+  fields: {
+    marginTop: '1rem',
+    border: 'none',
+    '& > label.MuiFormControlLabel-root': {
+      marginBottom: '1rem',
+    },
+    '& > :not(:last-child)': {
+      marginBottom: '2rem',
+    },
+  },
+  formActions: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    [theme.breakpoints.down('xs')]: {
+      flexDirection: 'column',
+      alignSelf: 'center',
+      height: '80px',
+    },
+  },
+}));
+
+const AuthForm = (props) => {
+  const { mode, toc, onSubmit, loading } = props;
+
+  const classes = useStyles();
+
+  const [state, setState] = useState({
+    username: '',
+    email: '',
+    password: '',
+  });
+  const [errors, setErrors] = useState({});
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => setPasswordVisible(!passwordVisible);
+
+  const handleInputChange = ({ target }) => {
+    setState({ ...state, [target.name]: target.value });
+    setErrors({ ...errors, [target.name]: null });
+  };
+
+  const handleSubmit = (e) => {
+    const { isValid, fieldErrors } = validateAuthForm(state, mode);
+    e.preventDefault();
+
+    if (!isValid) {
+      setErrors(fieldErrors);
+    } else {
+      onSubmit(state);
+    }
+  };
+
+  return (
+    <div className={`full-height ${classes.root}`}>
+      <Paper
+        className={classes.form}
+        component='form'
+        method='post'
+        variant='outlined'
+        onSubmit={handleSubmit}
+      >
+        <Typography align='center' component='h1' variant='h4'>
+          {mode === 'login' ? 'Login' : 'Signup'}
+        </Typography>
+        <fieldset
+          className={classes.fields}
+          disabled={loading}
+          aria-busy={loading}
+        >
+          {mode === 'signup' && (
+            <TextField
+              label='Username'
+              variant='outlined'
+              name='username'
+              error={Boolean(errors.username)}
+              helperText={errors.username}
+              onChange={handleInputChange}
+              fullWidth
+            />
+          )}
+          <TextField
+            label='Email'
+            type='email'
+            variant='outlined'
+            name='email'
+            error={Boolean(errors.email)}
+            helperText={errors.email}
+            onChange={handleInputChange}
+            fullWidth
+          />
+          <TextField
+            label='password'
+            type={passwordVisible ? 'text' : 'password'}
+            variant='outlined'
+            name='password'
+            error={Boolean(errors.password)}
+            helperText={errors.password}
+            onChange={handleInputChange}
+            InputProps={{
+              endAdornment: (
+                <VisibilityToggler
+                  onClick={togglePasswordVisibility}
+                  visible={passwordVisible}
+                />
+              ),
+            }}
+            fullWidth
+          />
+          <FormControlLabel
+            control={<Checkbox />}
+            label={(mode === 'login' && 'Remember me') || toc}
+          />
+          <div className={classes.formActions}>
+            <Button
+              color='primary'
+              size='large'
+              variant='contained'
+              type='submit'
+              startIcon={
+                loading ? (
+                  <CircularProgress color='inherit' size='1rem' />
+                ) : (
+                  <AddIcon />
+                )
+              }
+            >
+              {`${mode === 'login' ? 'Login' : 'Create'}`}
+            </Button>
+            <Link href={`/account/${mode === 'login' ? 'signup' : 'login'}`}>
+              <Typography>{`${
+                mode === 'login' ? 'Create an Account' : 'Login to your Account'
+              }`}</Typography>
+            </Link>
+          </div>
+        </fieldset>
+      </Paper>
+    </div>
+  );
+};
+
+AuthForm.propTypes = {
+  mode: PropTypes.string.isRequired,
+  toc: PropTypes.node,
+  onSubmit: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
+};
+
+export default AuthForm;
