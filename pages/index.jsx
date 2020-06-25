@@ -2,6 +2,7 @@ import { makeStyles } from '@material-ui/core';
 
 import AllProducts from '../components/landing/AllProducts';
 import Banner from '../components/landing/Banner';
+import Contact from '../components/landing/Contact';
 import Latest from '../components/landing/Latest';
 import TopCategories from '../components/landing/TopCategories';
 import Trending from '../components/landing/Trending';
@@ -26,6 +27,7 @@ const Landing = () => {
       <TopCategories id='top-categories' loading={true} />
       <Trending id='trending' loading={true} />
       <Latest id='latest' loading={true} />
+      <Contact id='contact' />
     </main>
   );
 };
