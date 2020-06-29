@@ -44,6 +44,7 @@
     "react-content-loader": "5.1.0",
     "react-dom": "16.13.1",
     "react-markdown": "4.3.1",
-    "react-multi-carousel": "2.5.5"
+    "react-multi-carousel": "2.5.5",
+    "react-swipeable-views": "0.13.9"
   }
 }
