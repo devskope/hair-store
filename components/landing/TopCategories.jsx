@@ -1,9 +1,14 @@
 import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
+import Avatar from '@material-ui/core/Avatar';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core';
 
+import Link from '../common/Link';
 import { sectionSpacing } from '../../lib/helpers';
 
 const useStyles = makeStyles((theme) => ({
@@ -57,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const TopCategories = (props) => {
-  const { id, loading, categories, getOffsetTop, pageHeight } = props;
+  const { id, loading, categories } = props;
 
   const classes = useStyles();
   const theme = useTheme();
@@ -88,6 +93,33 @@ const TopCategories = (props) => {
       </div>
     );
   }
+
+  return (
+    <div className={classes.root} id={id}>
+      <Container className={classes.container} fixed>
+        <Grid className={classes.grid} spacing={6} container>
+          {categories.map((category) => (
+            <ButtonBase key={category.name} className={classes.categoryBtn}>
+              <Link href={`/products?category=${category.name}`}>
+                <Paper className={classes.category} variant='outlined'>
+                  <Avatar className='image' src={category.image.url} />
+                  <Typography className='label'>{category.name}</Typography>
+                </Paper>
+              </Link>
+            </ButtonBase>
+          ))}
+          <ButtonBase className={classes.categoryBtn}>
+            <Link href='/reviews'>
+              <Paper className={classes.category} variant='outlined'>
+                <Avatar className='image' src='' />
+                <Typography className='label'>Reviews</Typography>
+              </Paper>
+            </Link>
+          </ButtonBase>
+        </Grid>
+      </Container>
+    </div>
+  );
 };
 
 TopCategories.defaultProps = {

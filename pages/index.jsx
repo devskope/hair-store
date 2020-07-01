@@ -27,7 +27,11 @@ const Landing = () => {
     <main className={classes.main}>
       <Banner id='banner' loading={loading} products={data?.featuredProducts} />
       <AllProducts id='all-products' />
-      <TopCategories id='top-categories' loading={true} />
+      <TopCategories
+        id='top-categories'
+        loading={loading}
+        categories={data?.categories}
+      />
       <Trending id='trending' loading={true} />
       <Latest id='latest' loading={true} />
       <Contact id='contact' />
