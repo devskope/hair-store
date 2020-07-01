@@ -1,7 +1,13 @@
 import PropTypes from 'prop-types';
 import ContentLoader from 'react-content-loader';
 import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import Carousel from 'react-multi-carousel';
+import Image from 'material-ui-image';
 import { fade, makeStyles, useTheme } from '@material-ui/core';
+
+import Link from '../common/Link';
+import { bannerItemsConfig } from '../../lib/config';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -59,6 +65,38 @@ const Banner = (props) => {
         </Container>
       </div>
     );
+
+  return (
+    <div id={id}>
+      <Container className={classes.container}>
+        <Carousel
+          className={classes.carousel}
+          keyBoardControl={false}
+          responsive={bannerItemsConfig}
+        >
+          {products.map((product) => (
+            <Link
+              key={product.slug}
+              className={classes.slideItem}
+              href='/products/[slug]'
+              as={`/products/${product.slug}`}
+            >
+              <Image
+                src={product.images[0]?.formats.medium.url}
+                style={{ backgroundColor: 'none', paddingTop: '56.25%' }}
+                alt='item image'
+              />
+              <div className={classes.description}>
+                <Typography variant='subtitle1' component='h1'>
+                  {product.summary}
+                </Typography>
+              </div>
+            </Link>
+          ))}
+        </Carousel>
+      </Container>
+    </div>
+  );
 };
 
 Banner.defaultProps = {
