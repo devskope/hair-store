@@ -32,8 +32,12 @@ const Landing = () => {
         loading={loading}
         categories={data?.categories}
       />
-      <Trending id='trending' loading={true} />
-      <Latest id='latest' loading={true} />
+      <Trending
+        id='trending'
+        loading={loading}
+        products={data?.featuredProducts}
+      />
+      <Latest id='latest' loading={loading} products={data?.latestProducts} />
       <Contact id='contact' />
     </main>
   );

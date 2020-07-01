@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
   ...homeGridStyles(theme),
   badge: {
     display: 'block',
+    height: '100%',
   },
 }));
 
