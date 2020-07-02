@@ -1,9 +1,11 @@
 import ContentLoader from 'react-content-loader';
 import { Container, makeStyles, TextField, useTheme } from '@material-ui/core';
+import { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 
-import { GET_CATEGORIES } from '../../lib/graphql/queries/categories';
 import CategoryPanel from '../../components/product/CategoryPanel';
+import { GET_CATEGORIES } from '../../lib/graphql/queries/categories';
+import { scrollToTarget } from '../../lib/helpers';
 
 const useStyles = makeStyles((theme) => ({
   page: {
@@ -29,12 +31,32 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Products = () => {
+  const { data, loading } = useQuery(GET_CATEGORIES);
+  const [expanded, setExpanded] = useState('none');
   const classes = useStyles();
   const theme = useTheme();
 
-  const { data, loading } = useQuery(GET_CATEGORIES);
-
   const categories = data?.categories ?? [];
+
+  const generatePanelId = (name) => {
+    return `${name.replace(' ', '-')}-panel-header`.toLowerCase();
+  };
+  const focusPanel = (id) => {
+    setTimeout(() => {
+      scrollToTarget(`#${id}`, { behavior: 'smooth' });
+    }, 350);
+  };
+  const handlePanelEpansionState = (panel) => (_, isExpanded) => {
+    setExpanded(isExpanded ? panel : 'none');
+
+    if (isExpanded) focusPanel(generatePanelId(panel));
+
+    window.history.replaceState(
+      {},
+      '',
+      `${location.pathname}?category=${panel}`
+    );
+  };
 
   if (loading || !data) {
     return (
@@ -65,7 +87,13 @@ const Products = () => {
       <Container className={classes.container} fixed>
         <TextField className={classes.search} label='Search Products' />
         {categories.map(({ name }) => (
-          <CategoryPanel key={name} name={name} />
+          <CategoryPanel
+            key={name}
+            id={generatePanelId(name)}
+            name={name}
+            expanded={expanded}
+            onChange={handlePanelEpansionState}
+          />
         ))}
       </Container>
     </main>

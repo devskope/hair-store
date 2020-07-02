@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CategoryPanel = (props) => {
-  const { name } = props;
+  const { id, name, onChange, expanded } = props;
 
   const classes = useStyles();
 
@@ -36,10 +36,15 @@ const CategoryPanel = (props) => {
   const panelSummaryProps = (name) => ({
     'aria-controls': generateContentContainerId(name),
     className: 'panel-summary',
+    id,
   });
 
   return (
-    <ExpansionPanel TransitionProps={{ unmountOnExit: true }}>
+    <ExpansionPanel
+      expanded={expanded === name}
+      onChange={onChange(name)}
+      TransitionProps={{ unmountOnExit: true }}
+    >
       <ExpansionPanelSummary
         classes={{
           content: classes.panel,
@@ -60,7 +65,10 @@ const CategoryPanel = (props) => {
 };
 
 CategoryPanel.propTypes = {
+  id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  expanded: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default CategoryPanel;
