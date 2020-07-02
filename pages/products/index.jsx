@@ -1,7 +1,11 @@
 import ContentLoader from 'react-content-loader';
-import { Container, makeStyles, useTheme } from '@material-ui/core';
+import { Container, makeStyles, TextField, useTheme } from '@material-ui/core';
+import { useQuery } from '@apollo/react-hooks';
 
-const useStyles = makeStyles(() => ({
+import { GET_CATEGORIES } from '../../lib/graphql/queries/categories';
+import CategoryPanel from '../../components/product/CategoryPanel';
+
+const useStyles = makeStyles((theme) => ({
   page: {
     display: 'flex',
     justifyContent: 'center',
@@ -28,7 +32,11 @@ const Products = () => {
   const classes = useStyles();
   const theme = useTheme();
 
-  if (true) {
+  const { data, loading } = useQuery(GET_CATEGORIES);
+
+  const categories = data?.categories ?? [];
+
+  if (loading || !data) {
     return (
       <main className={`full-height ${classes.page}`}>
         <Container className={classes.container} fixed>
@@ -51,6 +59,17 @@ const Products = () => {
       </main>
     );
   }
+
+  return (
+    <main className={`full-height ${classes.page}`}>
+      <Container className={classes.container} fixed>
+        <TextField className={classes.search} label='Search Products' />
+        {categories.map(({ name }) => (
+          <CategoryPanel key={name} name={name} />
+        ))}
+      </Container>
+    </main>
+  );
 };
 
 export default Products;
