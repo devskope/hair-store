@@ -1,6 +1,6 @@
 import ContentLoader from 'react-content-loader';
 import { Container, makeStyles, TextField, useTheme } from '@material-ui/core';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 
 import CategoryPanel from '../../components/product/CategoryPanel';
@@ -37,6 +37,15 @@ const Products = () => {
   const theme = useTheme();
 
   const categories = data?.categories ?? [];
+
+  useEffect(() => {
+    const category = new URL(location).searchParams.get('category');
+
+    if (category) {
+      setExpanded(category);
+      focusPanel(generatePanelId(category));
+    }
+  }, []);
 
   const generatePanelId = (name) => {
     return `${name.replace(' ', '-')}-panel-header`.toLowerCase();
