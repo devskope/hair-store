@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ItemCard = (props) => {
-  const { loading, product, id } = props;
+  const { loading, product, id, endRef } = props;
 
   const classes = useStyles();
   const router = useRouter();
@@ -89,6 +89,7 @@ const ItemCard = (props) => {
     <Card
       className={classes.card}
       onClick={() => router.push(`/products/${product.slug}`)}
+      ref={endRef}
       variant='outlined'
     >
       <IconButton className='like' children={likeIcon} onClick={toggleLike} />
@@ -121,6 +122,7 @@ const ItemCard = (props) => {
 ItemCard.propTypes = {
   loading: PropTypes.bool.isRequired,
   product: PropTypes.object,
+  endRef: PropTypes.func,
   id: PropTypes.string,
 };
 
