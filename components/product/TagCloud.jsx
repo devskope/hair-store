@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import Chip from '@material-ui/core/Chip';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core';
@@ -34,6 +35,14 @@ const TagCloud = (props) => {
         <Typography align='center'>Loading</Typography>
       </Paper>
     );
+
+  return (
+    <Paper className={classes.tagCloud} variant='outlined'>
+      {tags.map(({ name }, i) => (
+        <Chip key={i} label={name} color='primary' variant='outlined' />
+      ))}
+    </Paper>
+  );
 };
 
 TagCloud.defaultProps = {

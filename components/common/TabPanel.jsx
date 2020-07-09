@@ -8,15 +8,14 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.spacing(0, 0, 1, 1),
   },
   panel: {
-    backgroundColor: theme.palette.background.default,
     padding: '0.5rem',
     minHeight: '30ch',
-    borderRadius: theme.spacing(0, 2, 2, 0),
+    fontSize: 'large',
   },
 }));
 
 const TabPanel = (props) => {
-  const { children, value, index, ...other } = props;
+  const { children, value, id, index, ...other } = props;
   const classes = useStyles();
 
   return (
@@ -25,6 +24,7 @@ const TabPanel = (props) => {
         className={classes.panel}
         hidden={value !== index}
         role='tabpanel'
+        id={id}
         {...other}
       >
         {value === index && children}
@@ -35,6 +35,7 @@ const TabPanel = (props) => {
 
 TabPanel.propTypes = {
   children: PropTypes.node,
+  id: PropTypes.string,
   index: PropTypes.any.isRequired,
   value: PropTypes.any.isRequired,
 };
