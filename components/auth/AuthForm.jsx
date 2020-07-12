@@ -2,17 +2,21 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Checkbox from '@material-ui/core/Checkbox';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Collapse from '@material-ui/core/Collapse';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import Alert from '@material-ui/lab/Alert';
 import AddIcon from '@material-ui/icons/Add';
 import { makeStyles } from '@material-ui/core';
 import { useState } from 'react';
 
 import Link from '../common/Link';
+import transformApiError from '../../lib/utils/transformApiErrors';
 import { VisibilityToggler } from '../common/Elements';
 import { validateAuthForm } from '../../lib/utils/validators';
+import { useEffect } from 'react';
 
 export const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,7 +55,7 @@ export const useStyles = makeStyles((theme) => ({
 }));
 
 const AuthForm = (props) => {
-  const { mode, toc, onSubmit, loading } = props;
+  const { mode, toc, onSubmit, loading, postError } = props;
 
   const classes = useStyles();
 
@@ -61,7 +65,12 @@ const AuthForm = (props) => {
     password: '',
   });
   const [errors, setErrors] = useState({});
+  const [errorAlertVisible, setErrorAlert] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
+
+  useEffect(() => {
+    if (postError) setErrorAlert(true);
+  }, [postError]);
 
   const togglePasswordVisibility = () => setPasswordVisible(!passwordVisible);
 
@@ -77,9 +86,24 @@ const AuthForm = (props) => {
     if (!isValid) {
       setErrors(fieldErrors);
     } else {
+      setErrorAlert(false);
       onSubmit(state);
     }
   };
+
+  const ErrorAlert = (
+    <Alert severity='error' icon={false} onClose={() => setErrorAlert(false)}>
+      <ul>
+        {postError?.message.includes('Failed to fetch') ? (
+          <li> Network Error</li>
+        ) : (
+          transformApiError(postError)?.map((message, i) => (
+            <li key={i}>{message}</li>
+          ))
+        )}
+      </ul>
+    </Alert>
+  );
 
   return (
     <div className={`full-height ${classes.root}`}>
@@ -98,6 +122,7 @@ const AuthForm = (props) => {
           disabled={loading}
           aria-busy={loading}
         >
+          <Collapse in={errorAlertVisible}>{ErrorAlert}</Collapse>
           {mode === 'signup' && (
             <TextField
               label='Username'
@@ -174,6 +199,7 @@ AuthForm.propTypes = {
   toc: PropTypes.node,
   onSubmit: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
+  postError: PropTypes.object,
 };
 
 export default AuthForm;
