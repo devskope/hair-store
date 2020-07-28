@@ -35,6 +35,7 @@
     "@material-ui/lab": "4.0.0-alpha.56",
     "apollo-boost": "0.4.9",
     "graphql": "15.1.0",
+    "graphql-request": "2.0.0",
     "material-ui-image": "3.2.3",
     "next": "9.4.4",
     "next-with-apollo": "5.0.1",

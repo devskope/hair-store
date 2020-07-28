@@ -2,8 +2,8 @@ import useMuiTheme from '@devskope/use-mui-theme';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import { makeStyles } from '@material-ui/core';
-import { useEffect } from 'react';
 import { ApolloProvider } from '@apollo/react-hooks';
+import { useEffect } from 'react';
 import 'react-multi-carousel/lib/styles.css';
 
 import NavBar from '../components/common/Nav/Navbar';
@@ -11,6 +11,7 @@ import Footer from '../components/common/Footer';
 import pageLoader from '../lib/pageLoader';
 import withApollo from '../lib/graphql/apolloConfig';
 import themes from '../lib/themes';
+import { AuthProvider } from '../lib/context/auth';
 
 pageLoader();
 
@@ -43,11 +44,13 @@ const App = (props) => {
       <ApolloProvider client={apollo}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <NavBar setTheme={setTheme} />
-          <div className={classes.main}>
-            <Component {...pageProps} />
-          </div>
-          <Footer />
+          <AuthProvider refresh={Component}>
+            <NavBar setTheme={setTheme} />
+            <div className={classes.main}>
+              <Component {...pageProps} />
+            </div>
+            <Footer />
+          </AuthProvider>
         </ThemeProvider>
       </ApolloProvider>
     </>
