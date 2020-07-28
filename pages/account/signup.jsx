@@ -3,6 +3,7 @@ import { useMutation } from '@apollo/react-hooks';
 import { useRouter } from 'next/router';
 
 import AuthForm from '../../components/auth/AuthForm';
+import { NoAuth } from '../../components/auth/AuthHOCs';
 import { CREATE_USER } from '../../lib/graphql/mutations/users';
 
 export const useStyles = makeStyles((theme) => ({
@@ -49,4 +50,4 @@ const Signup = () => {
 
 Signup.propTypes = {};
 
-export default Signup;
+export default NoAuth(Signup);
